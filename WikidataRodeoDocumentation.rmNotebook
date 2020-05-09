@@ -1,0 +1,75 @@
+---
+title: "Wikidata R-odeo"
+output:
+  html_document:
+    df_print: paged
+---
+
+## Wikidata in 10 minutes
+
+### Items and properties
+
+* The two basic component pieces of Wikidata are **items** and **properties**. 
+* An item is a thing - a concept, object or topic that exists in the real world, such as “Rush”. 
+* These items each have **statements** associated with them - for example, “Rush is an instance of: Rock Band”. In that statement, “Rock Band” is a property: a class or trait that items can hold.
+
+This code tutorial is taken from the code of OpenVirus. See the discussion [here](https://github.com/petermr/openVirus/issues/15) 
+[Thomas Shafee](https://github.com/TS404) is the author of the code used
+
+Let us use some naming conventions (suffixes) for wikidata specific objects:
+
+.qr  = Query result(s)
+.qid = Wikidata QID number(s)
+.qs  = Wikidata item(s) summary
+.q   = Wikidata item(s) in full
+.p   = Properties of a Wikidata item(s)
+.wh  = Wiki page in html
+.wx  = Wiki page in xml
+
+Let us define some helper functions to test the nature the wikidata type of chain of characters: 
+
+```{r}
+is.qid  <- function(x){grepl("^[Qq][0-9]+$",x)}
+is.pid  <- function(x){grepl("^[Pp][0-9]+$",x)}
+is.date <- function(x){grepl("[0-9]{1,4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}",x)}
+is.quot <- function(x){grepl("^\".+\"$",x)}
+```
+
+## WikidataR
+
+* The package WikidataR is an API Client Library for Wikidata
+* sources can be found on [github](https://github.com/Ironholds/WikidataR)
+* authors: Oliver Keyes, Serena Signorelli & Christian Graul
+* last commit December 2017 :-(
+
+
+```{r}
+as_qid <- function(x){if(!all(is.qid(x))){WikidataR::find_item(x)[[1]]$id}else{x}}
+as_pid <- function(x){if(!all(is.pid(x))){WikidataR::find_property(x)[[1]]$id}else{x}}
+```
+
+
+## Writting to wikidata with R
+
+### dataframe/tibble to quickstatements
+see [this github issue](https://github.com/petermr/openVirus/issues/17)
+
+
+
+## Ideas of queries
+
+### List of all persons in wikidata that died because the Covid-19
+P509 (cause_of_death) Q84263196 (Covid-19)
+
+## WikipediR: A MediaWiki API client library
+Many websites run on versions of MediaWiki, most prominently Wikipedia and its sister sites. WikipediR is an API client library that allows you to conveniently make requests for content and associated metadata against MediaWiki instances.
+
+### Retrieving content
+"content" can mean a lot of different things - but mostly, we mean the text of an article, either its current version or any previous versions. Current versions can be retrieved using <code>page\_content</code>, which provides both HTML and wikitext as possible output formats. Older, individual revisions can be retrieved with <code>revision\_content</code>. These functions also return a range of possible metadata about the revisions or articles in question.
+
+Diffs between revisions can be generated using <code>revision\_diff</code>, while individual ''elements'' of a page's content - particularly links - can be extracted using <code>page\_links</code>, <code>page\_backlinks</code>, and <code>page\_external\_links</code>. And if the interest is in changes to content, rather than content itself, <code>recent\_changes</code> can be used to grab a slice of a project's Special:RecentChanges feed.
+
+### Retrieving metadata
+Page-related information can be accessed using <code>page\_info</code>, while categories that a page possesses can be retrieved with <code>categories\_in\_page</code> - the inverse of this operation (what pages are in a particular category?) uses <code>pages\_in\_category</code>.
+
+User-related info can be accessed with <code>user\_information</code>, while <code>user\_contributions</code> allows access to recent contributions by a particular user: this can be conveniently linked up with 
