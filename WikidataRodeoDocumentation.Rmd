@@ -7,6 +7,8 @@ output:
 
 ## Wikidata in 10 minutes
 
+https://en.wikipedia.org/wiki/Wikipedia:Wikidata#/media/File:Wikidata-logo-en.svg
+
 ### Items and properties
 
 * The two basic component pieces of Wikidata are **items** and **properties**. 
